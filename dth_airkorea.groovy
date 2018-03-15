@@ -1,15 +1,8 @@
 /**
- *  Foobot Air Quality Monitor DTH
+ *  AirKorea DTH
  *
- *  Copyright 2018 Michael Struck
- *  Precision code additions and other UI-Barry Burke
- * 
- *  Version 3.0.1 1/24/18
- *
- *  Version 2.0.0 (6/2/17) AdamV Release: Updated Region so it works in UK & US
- *  Version 3.0.0 (8/1/17) Re-engineered release by Michael Struck. Added C/F temperature units, cleaned up code and interface, adding a repoll timer, removed username
- *  used the standard 'carbonDioxide' variable instead of CO2, GPIstate instead of GPIState (for the activity log), set colors for Foobot recommended levels of attributes.
- *  Version 3.0.1 (1/24/18) Precision code additions and other UI-Barry Burke(@storageanarchy)
+ *  Copyright 2018 SeungCheol Lee
+ *  Version 0.0.1 3/15/18
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  *  in compliance with the License. You may obtain a copy of the License at:
