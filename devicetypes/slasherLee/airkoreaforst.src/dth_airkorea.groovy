@@ -15,7 +15,7 @@
  *
  */
  preferences {
-        input "station", "string", title: "Select your station name", defaultValue: "", required: true, , displayDuringSetup: true
+        input "station", "string", title: "Select your station name", defaultValue: "", required: true, displayDuringSetup: true
         input "refreshRate", "enum", title: "Data refresh rate", defaultValue: 0, options:[0: "Never" ,10: "Every 10 Minutes", 30: "Every 1/2 hour", 60 : "Every Hour", 240 :"Every 4 hours",
         	360: "Every 6 hours", 720: "Every 12 hours", 1440: "Once a day"], displayDuringSetup: true
 }
@@ -24,10 +24,6 @@ metadata {
 		capability "Polling"
         capability "Refresh"
         capability "Sensor"
-        capability "Khai Measurement"
-        capability "PM10 Measurement"
-        capability "PM25 Measurement"
-        capability "Ozone Measurement"
      
      	attribute "khai_value", "number"
         attribute "pm10_value", "number"
@@ -49,8 +45,8 @@ metadata {
                     [value: 100, color: "#d62d20"]
                 ])
   			}
-            tileAttribute("device.date_time", key: "SECONDARY_CONTROL") {
-           		attributeState("date_time", label:'${currentValue}')
+            tileAttribute("device.data_time", key: "SECONDARY_CONTROL") {
+           		attributeState("data_time", label:'${currentValue}')
             }
 		}
         valueTile("PM10", "device.pm10_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
@@ -109,7 +105,7 @@ def poll() {
             log.debug "Data will repoll every ${refreshRate} minutes"   
         }
         else log.debug "Data will never repoll" 
-        def accessKey = getAPIKey()  urlEncode
+        def accessKey = getAPIKey()
         def url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=" + urlEncode(station_name) + 
                   "&dataTerm=month&pageNo=1&numOfRows=1&ServiceKey=${accessKey}&_returnType=json"
         try {
