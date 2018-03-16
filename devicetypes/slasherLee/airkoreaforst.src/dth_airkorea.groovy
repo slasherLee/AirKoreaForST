@@ -25,6 +25,9 @@ metadata {
         attribute "pm10_value", "number"
         attribute "pm25_value", "number"
         attribute "o3_value", "number"
+        attribute "no2_value", "number"
+        attribute "so2_value", "number"
+        attribute "co_value", "number"
         attribute "data_time", "String"
 	}
     preferences {
@@ -36,59 +39,77 @@ metadata {
 		// TODO: define status and reply messages here
 	}
 	tiles (scale: 2){   
-        multiAttributeTile(name:"Khai", type:"generic", width:6, height:4) {
+        multiAttributeTile(name:"khai_value", type:"generic", width:6, height:4) {
             tileAttribute("device.khai_value", key: "PRIMARY_CONTROL") {
-    			attributeState("khai_value", label:'${currentValue}', unit:"", /*icon:"st.Weather.weather13",*/ backgroundColors:[
-                    [value: 24, color: "#1c71ff"],
-                    [value: 49, color: "#5c93ee"],
-                    [value: 74, color: "#ff4040"],
-                    [value: 100, color: "#d62d20"]
+    			attributeState("default", label:'${currentValue}', unit:"", /*icon:"st.Weather.weather13",*/ backgroundColors:[
+                    [value: 0, color: "#90d2a7"],
+                    [value: 50, color: "#44b621"],
+                    [value: 100, color: "#f1d801"],
+                    [value: 150, color: "#bc2323"],
+                    [value: 200, color: "#d62d20"]                    
                 ])
   			}
             tileAttribute("device.data_time", key: "SECONDARY_CONTROL") {
-           		attributeState("data_time", label:'${currentValue}')
+           		attributeState("default", label:'${currentValue}')
             }
 		}
-        valueTile("PM10", "device.pm10_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
-        	state "pm10", label:'${currentValue}\n μg/m³', unit:"μg/m³",backgroundColors:[
+        valueTile("pm10_value", "device.pm10_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
+        	state "default", label:'${currentValue}μg/m³', unit:"μg/m³", backgroundColors:[
                     [value: 0, color: "#90d2a7"],
                     [value: 50, color: "#44b621"],
                     [value: 100, color: "#f1d801"],
                     [value: 200, color: "#bc2323"]
                 ]
         }
-        valueTile("PM25", "device.pm25_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
-        	state "pm25", label:'${currentValue}\n μg/m³', unit:"μg/m³",backgroundColors:[
+        valueTile("pm25_value", "device.pm25_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
+        	state "default", label:'${currentValue}μg/m³', unit:"μg/m³", backgroundColors:[
                     [value: 0, color: "#90d2a7"],
                     [value: 50, color: "#44b621"],
                     [value: 100, color: "#f1d801"],
                     [value: 200, color: "#bc2323"]
                 ]
         }
-        valueTile("o3", "device.o3_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
-            state "o3", label:'${currentValue}\n ppm', unit:"ppm",backgroundColors:[
+        valueTile("o3_value", "device.o3_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
+            state "default", label:'${currentValue}ppm', unit:"ppm", backgroundColors:[
                     [value: 0, color: "#90d2a7"],
-                    [value: 150, color: "#44b621"],
-                    [value: 300, color: "#f1d801"],
-                    [value: 450, color: "#bc2323"]
+                    [value: 0.005, color: "#44b621"],
+                    [value: 0.01, color: "#f1d801"],
+                    [value: 0.02, color: "#bc2323"]
+                ]
+        }
+        valueTile("no2_value", "device.so2_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
+            state "default", label:'${currentValue}ppm', unit:"ppm", backgroundColors:[
+                    [value: 0, color: "#90d2a7"],
+                    [value: 0.005, color: "#44b621"],
+                    [value: 0.01, color: "#f1d801"],
+                    [value: 0.02, color: "#bc2323"]
+                ]
+        }
+        valueTile("so2_value", "device.so2_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
+            state "default", label:'${currentValue}ppm', unit:"ppm", backgroundColors:[
+                    [value: 0, color: "#90d2a7"],
+                    [value: 0.005, color: "#44b621"],
+                    [value: 0.01, color: "#f1d801"],
+                    [value: 0.02, color: "#bc2323"]
+                ]
+        }
+        valueTile("co_value", "device.o3_value", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
+            state "default", label:'${currentValue}ppm', unit:"ppm", backgroundColors:[
+                    [value: 0, color: "#90d2a7"],
+                    [value: 0.005, color: "#44b621"],
+                    [value: 0.01, color: "#f1d801"],
+                    [value: 0.02, color: "#bc2323"]
                 ]
         }
         standardTile("refresh", "device.refresh", inactiveLabel: false, width: 2, height: 2, decoration: "flat") {
-            state "refresh", action:"refresh.refresh", icon:"st.secondary.refresh"
+            state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
         }
-        valueTile("refreshes", "device.refreshes", inactiveLable: false, decoration: "flat", width: 4, height: 1) {
-			state "refreshes", label:'Refreshes Remaining Today: ${currentValue}'
-		}
-        standardTile("spacerlastUpdatedLeft", "spacerTile", decoration: "flat", width: 1, height: 1) {
- 		}
-        standardTile("spacerlastUpdatedRight", "spacerTile", decoration: "flat", width: 1, height: 1) {
- 		}
         main "khai_value"
-        details(["khai_value","pm10_value","pm25_value","o3_value","refresh","spacerlastUpdatedLeft", "refreshes","spacerlastUpdatedRight"])
+        details(["khai_value","pm10_value","pm25_value","o3_value","no2_value","so2_value","co_value","refresh"])
 	}
 }
 private getAPIKey() {
-    return "8OAJRHK5%2BTn75SiXMtbgUvkVSWOfBvxYSmFZ6J9NMZsBNbsWwvLH7dPFg04%2FTqSiDYh00l181QE91qw4e1dNmw%3D%3D"
+    return ""
 }
 def parse(String description) {
 	log.debug "Parsing '${description}'"
@@ -98,7 +119,6 @@ def refresh() {
 }
 // handle commands
 def poll() {
-    def station_name = "단대동"
     if (station_name){
         def refreshTime =  refreshRate ? (refreshRate as int) * 60 : 0
         if (refreshTime > 0) {
@@ -146,23 +166,25 @@ def poll() {
                     if( resp.data.list[0].o3Value )
                     {
                         log.debug "Ozone: ${resp.data.list[0].o3Value}"
-                        sendEvent(name: "o3_value", value: resp.data.list[0].o3Value as Double, unit: "ppm", isStateChange: true)
+                        sendEvent(name: "o3_value", value: sprintf("%.3f", resp.data.list[0].o3Value as Double), unit: "ppm", isStateChange: true)
                     }
                     else
                         sendEvent(name: "o3_value", value: -1, unit: "", isStateChange: true)
 
-                    log.debug "Khai value: ${resp.data[0].khaiValue}"
-                    sendEvent(name: "khai_value", value: resp.data.list[0].khaiValue as Integer, unit: "", isStateChange: true)
+                    def khai = resp.data.list[0].khaiValue as Integer
+                    log.debug "Khai value: ${khai}"
+                    sendEvent(name: "khai_value", value: khai, unit: "", isStateChange: true)
 
-                    def khai_grade = resp.data.list[0].khaiGrade
                     def khai_text 
-                    if (khai_grade == 0) khai_text="GREAT"
-                    else if (allpollu == 1) khai_text="GOOD"
-                    else if (allpollu == 2) khai_text="FAIR"
-                    else if (allpollu == 3) khai_text="POOR"
-                    else if (allpollu == 4) khai_text="VERY POOR"
+                    if (!khai) khai_text="에러"
+                    if (khai > 200) khai_text="매우 나쁨"
+                    else if (khai > 150 ) khai_text="나쁨"
+                    else if (khai > 100) khai_text="보통"
+                    else if (khai > 50) khai_text="좋음"
+                    else if (khai >= 0) khai_text="매우 좋음"
+                    else khai_text="에러"
 
-                    sendEvent(name:"data_time", value:khai_text + "(${resp.data.parm.stationName})" + " - Last Updated: " + resp.data.list[0].dataTime, isStateChange: true)
+                    sendEvent(name:"data_time", value: khai_text + "(" + resp.data.parm.stationName + ") - Last Updated: " + resp.data.list[0].dataTime, isStateChange: true)
           		}
             	else if (resp.status==429) log.debug "You have exceeded the maximum number of refreshes today"	
                 else if (resp.status==500) log.debug "Internal server error"
