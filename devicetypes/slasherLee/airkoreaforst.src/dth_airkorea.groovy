@@ -2,6 +2,7 @@
  *  AirKorea DTH
  *
  *  Copyright 2018 SeungCheol Lee
+ *  Version 0.0.2 3/18/18
  *  Version 0.0.1 3/15/18
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
