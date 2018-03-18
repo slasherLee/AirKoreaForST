@@ -22,6 +22,13 @@ metadata {
         capability "Sensor"
         capability "capability.airQualitySensor"
         
+        attribute "airQuality", "number"
+        attribute "pm10_value", "number"
+        attribute "pm25_value", "number"
+        attribute "o3_value", "number"
+        attribute "no2_value", "number"
+        attribute "so2_value", "number"
+        attribute "co_value", "number"
     }
     preferences {
         input "station_name", "text", title: "관측소 이름", description: "관측소 이름을 입력해주세요", required: true
@@ -67,16 +74,16 @@ metadata {
             	[value: 150, color: "#5100a3"]
             ]
         }
-        valueTile("o3_value", "device.o3_value", width: 2, height: 2) {
+        valueTile("o3_value", "device.o3_disp_value", width: 2, height: 2) {
             state "default", label:'O3\n ${currentValue}', unit:"ppm", backgroundColor:"#00A0DC"
         }
-        valueTile("no2_value", "device.no2_value", width: 2, height: 2) {
+        valueTile("no2_value", "device.no2_disp_value", width: 2, height: 2) {
             state "default", label:'NO2\n ${currentValue}', unit:"ppm", backgroundColor:"#00A0DC"
         }
-        valueTile("so2_value", "device.so2_value", width: 2, height: 2) {
+        valueTile("so2_value", "device.so2_disp_value", width: 2, height: 2) {
             state "default", label:'SO2\n ${currentValue}', unit:"ppm", backgroundColor:"#00A0DC"
         }
-        valueTile("co_value", "device.co_value", width: 2, height: 2) {
+        valueTile("co_value", "device.co_disp_value", width: 2, height: 2) {
             state "default", label:' CO\n ${currentValue}', unit:"ppm", backgroundColor:"#00A0DC"
         }
         standardTile("refresh", "device.refresh", width: 2, height: 2, decoration: "flat") {
@@ -139,43 +146,52 @@ def poll() {
                     else
                     	sendEvent(name: "pm25_value", value: "--", unit: "μg/m³", isStateChange: true)
                     
+                    def real_value
                     def display_value
                     def unit_str = " \n ppm"
                     if( resp.data.list[0].o3Value != "-" )
                     {
-                    	log.debug "Ozone: ${resp.data.list[0].o3Value}"
-                        display_value = resp.data.list[0].o3Value + unit_str
-                        sendEvent(name: "o3_value", value: display_value as String, unit: "ppm", isStateChange: true)
+                        real_value = resp.data.list[0].o3Value
+                    	log.debug "Ozone: ${real_value}"
+                        display_value = real_value + unit_str
+                        sendEvent(name: "o3_disp_value", value: "${display_value}", unit: "ppm", isStateChange: true)
+                        sendEvent(name: "o3_value", value: "${real_value}", unit: "ppm")
                     }
                     else
-                    	sendEvent(name: "o3_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
+                    	sendEvent(name: "o3_disp_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
                     
                     if( resp.data.list[0].no2Value != "-" )
                     {
-                        log.debug "NO2: ${resp.data.list[0].no2Value}"
-                        display_value = resp.data.list[0].no2Value + unit_str
-                        sendEvent(name: "no2_value", value: display_value as String, unit: "ppm", isStateChange: true)
+                        real_value = resp.data.list[0].no2Value
+                        log.debug "NO2: ${real_value}"
+                        display_value = real_value + unit_str
+                        sendEvent(name: "no2_disp_value", value: "${display_value}", unit: "ppm", isStateChange: true)
+                        sendEvent(name: "no2_value", value: "${real_value}", unit: "ppm")
                     }
                     else
-                    	sendEvent(name: "no2_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
+                    	sendEvent(name: "no2_disp_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
                     
                     if( resp.data.list[0].so2Value != "-" )
                     {
-                        log.debug "SO2: ${resp.data.list[0].so2Value}"
-                        display_value = resp.data.list[0].so2Value + unit_str
-                        sendEvent(name: "so2_value", value: display_value as String, unit: "ppm", isStateChange: true)
+                        real_value = resp.data.list[0].so2Value
+                        log.debug "SO2: ${real_value}"
+                        display_value = real_value + unit_str
+                        sendEvent(name: "so2_disp_value", value: "${display_value}", unit: "ppm", isStateChange: true)
+                        sendEvent(name: "so2_value", value: "${real_value}", unit: "ppm")
                     }
                     else
-                    	sendEvent(name: "so2_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
+                    	sendEvent(name: "so2_disp_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
                     
                     if( resp.data.list[0].coValue != "-" )
                     {
-                        log.debug "CO: ${resp.data.list[0].coValue}"
-                        display_value = resp.data.list[0].coValue + unit_str
-                        sendEvent(name: "co_value", value: display_value as String, unit: "ppm", isStateChange: true)
+                        real_value = resp.data.list[0].coValue
+                        log.debug "CO: ${real_value}"
+                        display_value = real_value + unit_str
+                        sendEvent(name: "co_disp_value", value: "${display_value}", unit: "ppm", isStateChange: true)
+                        sendEvent(name: "co_value", value: "${real_value}", unit: "ppm")
                     }
                     else
-                    	sendEvent(name: "co_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
+                    	sendEvent(name: "co_disp_value", value: "--" + unit_str, unit: "ppm", isStateChange: true)
                     
                     def khai_text = "알수없음"
                     if( resp.data.list[0].khaiValue != "-" )
